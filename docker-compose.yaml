@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "user"
+      POSTGRES_PASSWORD: "pass"
+      POSTGRES_DB: "emails"
+  rabbitmq:
+    image: 'bitnami/rabbitmq:latest'
+    volumes:
+      - ./.init/rabbitmq/:/opt/bitnami/rabbitmq/etc/rabbitmq/
+    environment:
+      - RABBITMQ_USERNAME=user
+      - RABBITMQ_PASSWORD=pass
+    ports:
+      - 5672:5672
+      - 15672:15672

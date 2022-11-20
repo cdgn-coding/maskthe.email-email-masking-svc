@@ -1,0 +1,12 @@
+POST http://localhost:49155/api/queues/%2F/sendEmails/get
+Authorization: Basic guest guest
+Content-Type: application/json
+
+{
+  "vhost":"/",
+  "name":"sendEmails",
+  "truncate":"50000",
+  "ackmode":"ack_requeue_true",
+  "encoding":"auto",
+  "count":"1"
+}

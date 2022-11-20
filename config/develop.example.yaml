@@ -1,0 +1,8 @@
+logger:
+  level: "development"
+postgres:
+  dsn: "postgresql://user:pass@localhost:5432/emails"
+http:
+  port: ":8080"
+rabbitmq:
+  url: "amqp://guest:guest@localhost:49154/"

@@ -1,0 +1,11 @@
+POST http://localhost:15672/api/exchanges/%2F/amq.default/publish
+Authorization: Basic guest guest
+Content-Type: application/json
+
+{
+  "properties": {},
+  "name": "amq.default",
+  "routing_key": "emails",
+  "payload": "{\r\n\"From\": \"somerandommail@random.com\",\r\n\"To\": \"test@maskthe.email\",\r\n\"PlainText\": \"Esto es un mensaje\",\r\n\"HTML\": \"Esto es un mensaje\",\r\n\"Attachments\": [],\r\n\"Subject\": \"Esto es un subject\"\r\n}",
+  "payload_encoding": "string"
+}

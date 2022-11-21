@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"path"
+	"strings"
 )
 
 type Config interface {
@@ -24,6 +25,7 @@ func LoadConfig() *config {
 	viperConfig.SetConfigName(filename)
 	viperConfig.AddConfigPath(filePath)
 	viperConfig.AutomaticEnv()
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viperConfig.SetConfigType("yml")
 	err := viperConfig.ReadInConfig() // Find and read the config file
 	if err != nil {                   // Handle errors reading the config file

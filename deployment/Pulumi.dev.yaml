@@ -1,0 +1,6 @@
+config:
+  email-masking-svc-deployment:clusterStackRef: cdgn_pulumi_1/maskthe-cluster-services/dev
+  email-masking-svc-deployment:postgresPassword:
+    secure: AAABAJevouVP4CX8DxkA806aEw9/aAR28YqpqiUZGNM25X/L
+  email-masking-svc-deployment:rabbitmqPassword:
+    secure: AAABABmP1uCrueMWFvevu2252KiNQzZ7+TfZ8VKgOwVRLEP5

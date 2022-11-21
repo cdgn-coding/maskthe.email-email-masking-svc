@@ -1,0 +1,11 @@
+logger:
+  level: "development"
+postgres:
+  dsn: ""
+http:
+  port: ":8081"
+rabbitmq:
+  url: ""
+  queues:
+    emailsReceived: "emails"
+    emailsToSend: "sendEmails"

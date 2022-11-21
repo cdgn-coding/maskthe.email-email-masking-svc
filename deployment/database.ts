@@ -1,6 +1,8 @@
 import * as k8s from "@pulumi/kubernetes";
 import * as kx from "@pulumi/kubernetesx";
 import { postgresPassword} from "./config";
+import { createService } from "./utils";
+import {interpolate} from "@pulumi/pulumi";
 
 export const postgresDatabaseName = "emails";
 
@@ -118,8 +120,19 @@ export const postgresDeployment = new kx.Deployment("postgres-deployment", {
     spec: pb.asDeploymentSpec({ replicas: 1 }),
 });
 
-export const postgresSvc = postgresDeployment.createService({
-    type: kx.types.ServiceType.ClusterIP,
-});
+const serviceName = "email-masking-postgres";
+
+export const postgresSvc = createService(
+    {
+        name: serviceName,
+        serviceSpecs: { type: kx.types.ServiceType.ClusterIP },
+        metadata: {
+            name: serviceName,
+        },
+    },
+    postgresDeployment
+);
 
 export const postgresClusterIP = postgresSvc.spec.clusterIP;
+
+export const postgresConnectionDsn = interpolate`postgres://postgres:${postgresPassword}@${serviceName}.default.svc.cluster.local:5432/${postgresDatabaseName}`;

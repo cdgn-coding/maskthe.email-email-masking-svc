@@ -1,13 +1,11 @@
 import * as kx from "@pulumi/kubernetesx";
-import { interpolate } from "@pulumi/pulumi";
-import { postgresDatabaseName, postgresSvc } from "./database";
-import { rabbitmqSvc } from "./topics";
-import { rabbitmqPassword, postgresPassword } from "./config";
+import { postgresConnectionDsn } from "./database";
+import { rabbitmqUrl } from "./topics";
 
 const env = {
     "GO_ENVIRONMENT": "production",
-    "POSTGRES_DSN": interpolate`postgres://postgres:${postgresPassword}@${postgresSvc.spec.clusterIP}:5432/${postgresDatabaseName}`,
-    "RABBITMQ_URL": interpolate`amqp://user:${rabbitmqPassword}@${rabbitmqSvc.spec.clusterIP}:5672/`,
+    "POSTGRES_DSN": postgresConnectionDsn,
+    "RABBITMQ_URL": rabbitmqUrl,
 }
 
 const componentName = "email-masking-svc";

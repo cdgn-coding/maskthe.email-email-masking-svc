@@ -1,6 +1,9 @@
 import * as k8s from "@pulumi/kubernetes";
 import * as kx from "@pulumi/kubernetesx";
 import { rabbitmqPassword } from "./config";
+import {createService} from "./utils";
+import {postgresDeployment} from "./database";
+import {interpolate} from "@pulumi/pulumi";
 
 export const rabbitmqSecret = new k8s.core.v1.Secret("rabbitmq-secret", {
     stringData: {
@@ -100,8 +103,19 @@ export const rabbitmqDeployment = new kx.Deployment("rabbitmq-deployment", {
     spec: pb.asDeploymentSpec({ replicas: 1 }),
 });
 
-export const rabbitmqSvc = rabbitmqDeployment.createService({
-    type: kx.types.ServiceType.ClusterIP,
-});
+const serviceName = "email-masking-rabbitmq";
+
+export const rabbitmqSvc = createService(
+    {
+        name: serviceName,
+        serviceSpecs: { type: kx.types.ServiceType.ClusterIP },
+        metadata: {
+            name: serviceName,
+        },
+    },
+    rabbitmqDeployment
+);
 
 export const rabbitmqClusterIP = rabbitmqSvc.spec.clusterIP;
+
+export const rabbitmqUrl = interpolate`amqp://user:${rabbitmqPassword}@${serviceName}.default.svc.cluster.local:5672/`;

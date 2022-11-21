@@ -103,3 +103,5 @@ export const rabbitmqDeployment = new kx.Deployment("rabbitmq-deployment", {
 export const rabbitmqSvc = rabbitmqDeployment.createService({
     type: kx.types.ServiceType.ClusterIP,
 });
+
+export const rabbitmqClusterIP = rabbitmqSvc.spec.clusterIP;

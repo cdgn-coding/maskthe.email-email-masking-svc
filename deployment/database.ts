@@ -121,3 +121,5 @@ export const postgresDeployment = new kx.Deployment("postgres-deployment", {
 export const postgresSvc = postgresDeployment.createService({
     type: kx.types.ServiceType.ClusterIP,
 });
+
+export const postgresClusterIP = postgresSvc.spec.clusterIP;

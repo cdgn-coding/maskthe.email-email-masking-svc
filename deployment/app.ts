@@ -26,6 +26,7 @@ const pb = new kx.PodBuilder({
                 httpGet: {
                     path: "/health",
                     port: 8081,
+
                 },
             },
         },
@@ -38,4 +39,5 @@ const deployment = new kx.Deployment(componentName, {
 
 export const appService = deployment.createService({
     type: kx.types.ServiceType.ClusterIP,
+    ports: [{ port: 8080, targetPort: 8081 }],
 });

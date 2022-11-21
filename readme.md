@@ -6,6 +6,31 @@ On the other hand, it manages a database of email addresses and their correspond
 
 ![Architecture](/docs/diagrams/email-masking-svc.png)
 
+## How to run
+
+## Prerequisites
+
+- [Docker](https://docs.docker.com/install/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Go](https://golang.org/doc/install)
+- [Pulumi](https://www.pulumi.com/docs/get-started/install/)
+
+### Minikube
+
+If you want to run the service locally, you can use [Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/).
+
+Build the docker image onto the cluster.
+
+```bash
+minikube image build -t email-masking-svc .
+```
+
+Use pulumi to deploy the service.
+
+```bash
+pulumi up -y
+```
+
 ## License
 
     Copyright 2022 Carlos David Gonzalez Nexans

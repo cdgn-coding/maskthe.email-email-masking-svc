@@ -5,7 +5,7 @@ import amqp "github.com/rabbitmq/amqp091-go"
 func DeclareQueue(channel *amqp.Channel, name string) amqp.Queue {
 	q, err := channel.QueueDeclare(
 		name,  // name
-		false, // durable
+		true,  // durable
 		false, // delete when unused
 		false, // exclusive
 		false, // no-wait

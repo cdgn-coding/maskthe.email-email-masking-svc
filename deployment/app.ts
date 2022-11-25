@@ -1,11 +1,12 @@
 import * as kx from "@pulumi/kubernetesx";
-import { postgresConnectionDsn } from "./database";
-import { rabbitmqUrl } from "./topics";
+import { createService } from "./utils";
+import { postgresDsn, rabbitmqEndpoint } from "./config";
+
 
 const env = {
     "GO_ENVIRONMENT": "production",
-    "POSTGRES_DSN": postgresConnectionDsn,
-    "RABBITMQ_URL": rabbitmqUrl,
+    "POSTGRES_DSN": postgresDsn,
+    "RABBITMQ_URL": rabbitmqEndpoint,
 }
 
 const componentName = "email-masking-svc";
@@ -35,7 +36,15 @@ const deployment = new kx.Deployment(componentName, {
     spec: pb.asDeploymentSpec({ replicas: 1 }),
 });
 
-export const appService = deployment.createService({
-    type: kx.types.ServiceType.ClusterIP,
-    ports: [{ port: 8080, targetPort: 8081 }],
-});
+export const appService = createService({
+    name: componentName,
+    serviceSpecs: {
+        type: kx.types.ServiceType.ClusterIP,
+        ports: [{ port: 8080, targetPort: 8081 }],
+    },
+    metadata: {
+        name: componentName,
+    }
+}, deployment);
+
+export const appEndpoint = `${componentName}.default.svc.cluster.local`;

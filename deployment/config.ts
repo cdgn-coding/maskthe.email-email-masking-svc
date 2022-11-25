@@ -2,5 +2,9 @@ import * as pulumi from "@pulumi/pulumi";
 
 const config = new pulumi.Config();
 
-export const rabbitmqPassword = config.requireSecret("rabbitmqPassword");
-export const postgresPassword = config.requireSecret("postgresPassword");
+const clusterSetup = new pulumi.StackReference(
+    config.require("cluster-setup")
+);
+
+export const postgresDsn = clusterSetup.requireOutput("postgresDsn");
+export const rabbitmqEndpoint = clusterSetup.requireOutput("rabbitmqEndpoint");

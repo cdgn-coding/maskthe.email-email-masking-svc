@@ -1,4 +1,5 @@
 import * as kx from "@pulumi/kubernetesx";
+import * as k8s from "@pulumi/kubernetes";
 import { createService } from "./utils";
 import { postgresDsn, rabbitmqEndpoint } from "./config";
 
@@ -40,7 +41,15 @@ export const appService = createService({
     name: componentName,
     serviceSpecs: {
         type: kx.types.ServiceType.ClusterIP,
-        ports: [{ port: 8080, targetPort: 8081 }],
+        ports: [{
+            protocol: "TCP",
+            name: "web",
+            port: 8080,
+            targetPort: 8081
+        }],
+        selector: {
+            app: componentName,
+        },
     },
     metadata: {
         name: componentName,

@@ -11,7 +11,7 @@ const env = {
 }
 
 const componentName = "email-masking-svc";
-const imageName = "email-masking-svc";
+const imageName = "email-masking-svc:v1";
 
 const pb = new kx.PodBuilder({
     containers: [
@@ -19,7 +19,7 @@ const pb = new kx.PodBuilder({
             env,
             name: componentName,
             image: imageName,
-            imagePullPolicy: "Never",
+            imagePullPolicy: "IfNotPresent",
             resources: { requests: { cpu: "128m", memory: "256Mi" } },
             ports: { http: 8081 },
             livenessProbe: {

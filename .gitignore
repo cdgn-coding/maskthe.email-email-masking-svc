@@ -18,3 +18,5 @@
 config/develop.yaml
 config/stage.yaml
 config/prod.yaml
+
+deployment/Pulumi.prod.yaml

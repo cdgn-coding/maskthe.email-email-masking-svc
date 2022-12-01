@@ -21,9 +21,10 @@ func NewEmailConsumer(logger configuration.Logger, redirectEmail *services.Redir
 var PayloadNotValid = errors.New("payload not valid")
 
 func (e *EmailConsumer) Invoke(payload string) error {
+	e.logger.Info("Received an email, processing masking. ", payload)
 	command := &events.ReceivedEmail{}
-	err := json.Unmarshal([]byte(payload), command)
 
+	err := json.Unmarshal([]byte(payload), command)
 	if err != nil {
 		e.logger.Error(fmt.Sprintf("Unable to parse payload. %s", payload))
 		return PayloadNotValid

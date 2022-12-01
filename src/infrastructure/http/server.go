@@ -9,9 +9,10 @@ import (
 	"email-masking-svc/src/infrastructure/postgresql/repositories"
 	"email-masking-svc/src/infrastructure/rabbitmq"
 	"email-masking-svc/src/infrastructure/rabbitmq/queues"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	amqp "github.com/rabbitmq/amqp091-go"
-	"net/http"
 )
 
 type Server struct {
@@ -35,7 +36,7 @@ func NewServer() *Server {
 	channel := rabbitmq.CreateConnection(config.GetString("rabbitmq.url"))
 	emailsToSendTopic := config.GetString("rabbitmq.queues.emailsToSend")
 	sendEmailPublisher := queues.NewPublisher(channel, emailsToSendTopic)
-	redirectEmail := services.NewRedirectEmail(maskRepository, sendEmailPublisher)
+	redirectEmail := services.NewRedirectEmail(maskRepository, sendEmailPublisher, logger)
 	emailConsumer := consumers.NewEmailConsumer(logger, redirectEmail)
 
 	return &Server{
